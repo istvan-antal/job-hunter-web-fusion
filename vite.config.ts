@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
     plugins: [deno(), react()],
     server: {
       port: parseInt(env.VITE__PORT),
+      proxy: {
+        "/api": "http://localhost:14001/",
+      },
     },
   });
 });
