@@ -1,12 +1,10 @@
-import { spawn } from "node:child_process";
-import process from "node:process";
-import cookieParser from "npm:cookie-parser";
-// @deno-types="@types/express"
-import express from "npm:express";
-import { TokenExpiredError, verify } from "npm:jsonwebtoken";
-import type { User } from "./core/entities/User.ts";
-import { extractCookies } from "./core/http.ts";
-import serverFunctions from "./functions.ts";
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import { TokenExpiredError, verify } from 'jsonwebtoken';
+import { spawn } from 'node:child_process';
+import type { User } from './core/entities/User.ts';
+import { extractCookies } from './core/http.ts';
+import serverFunctions from './functions.ts';
 
 const app = express();
 
@@ -14,38 +12,34 @@ app.use(cookieParser());
 app.use(express.json());
 
 if (process.env.CLIENT_DEV) {
-    console.log("process.env.CLIENT_DEV");
-    const command = spawn("deno", ["task", "dev"], {
+    const command = spawn('bun', ['run', 'dev'], {
         env: {
-            VITE__PORT: "14000",
+            VITE__PORT: '14000',
         },
-        stdio: ["inherit", "pipe", "pipe"],
-        shell: true,
+        stdio: ['inherit', 'pipe', 'pipe'],
     });
 
-    command.stdout?.on("data", (data) => {
+    command.stdout?.on('data', (data) => {
         console.log(data.toString());
     });
 
-    command.stderr?.on("data", (data) => {
+    command.stderr?.on('data', (data) => {
         console.error(data.toString());
     });
 }
 
-const port = +(process.env.PORT || "14001");
+const port = +(process.env.PORT || '14001');
 
-app.use(express.static("dist"));
+app.use(express.static('dist'));
 
 const decodeToken = <T>(token: string) => {
-    const jwtSecret = process.env.JWT_SECRET || "__SECRET_CHANGE_ME__";
+    const jwtSecret = process.env.JWT_SECRET || '__SECRET_CHANGE_ME__';
     return verify(token, jwtSecret) as unknown as T;
 };
 
 const extractUser = (accessToken: string | undefined) => {
     try {
-        return accessToken
-            ? (decodeToken(accessToken) as { user: User }).user
-            : undefined;
+        return accessToken ? (decodeToken(accessToken) as { user: User }).user : undefined;
     } catch (error) {
         if (error instanceof TokenExpiredError) {
             return undefined;
@@ -55,11 +49,9 @@ const extractUser = (accessToken: string | undefined) => {
     }
 };
 
-app.post("/api/:function", (request, response) => {
+app.post('/api/:function', (request, response) => {
     (async () => {
-        const accessToken = request.cookies["access-token"] as
-            | string
-            | undefined;
+        const accessToken = request.cookies['access-token'] as string | undefined;
 
         const args = request.body;
 
@@ -71,9 +63,7 @@ app.post("/api/:function", (request, response) => {
             user: extractUser(accessToken),
         });
 
-        const cookies = extractCookies(
-            result as unknown as { [key: symbol | string | number]: unknown },
-        );
+        const cookies = extractCookies(result as unknown as { [key: symbol | string | number]: unknown });
 
         if (cookies) {
             for (const [name, value] of Object.entries(cookies)) {

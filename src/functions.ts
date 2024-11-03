@@ -1,6 +1,6 @@
-import test from "./core/api/test.ts";
+import test from './core/api/test';
 
-// deno-lint-ignore no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const functions: { [key: string]: (...args: any[]) => Promise<unknown> } = {
     test,
 };

@@ -1,4 +1,4 @@
-import type { Context } from "../context.ts";
+import type { Context } from '../context';
 
 const test = async (a: number, b: number, _context: Context) => {
     return a + b;
