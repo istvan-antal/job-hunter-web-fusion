@@ -26,6 +26,10 @@ if (process.env.CLIENT_DEV) {
     command.stderr?.on('data', (data) => {
         console.error(data.toString());
     });
+
+    process.on('exit', () => {
+        command.kill();
+    });
 }
 
 const port = +(process.env.PORT || '14001');
