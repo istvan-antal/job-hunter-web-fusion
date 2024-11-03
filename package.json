@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "server": "CLIENT_DEV=1 bun run ./src/server",
+        "server": "CLIENT_DEV=1 bun run ./src/main/server",
         "dev": "vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",

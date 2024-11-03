@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import './App.css';
-import useTest from './home/hooks/useTest';
+import useTest from '../hooks/useTest';
 
 function App() {
     const test = useTest();

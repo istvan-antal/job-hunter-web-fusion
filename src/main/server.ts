@@ -2,8 +2,8 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import { TokenExpiredError, verify } from 'jsonwebtoken';
 import { spawn } from 'node:child_process';
-import type { User } from './core/entities/User.ts';
-import { extractCookies } from './core/http.ts';
+import type { User } from '../core/entities/User.ts';
+import { extractCookies } from '../core/http.ts';
 import serverFunctions from './functions.ts';
 
 const app = express();
@@ -16,15 +16,7 @@ if (process.env.CLIENT_DEV) {
         env: {
             VITE__PORT: '14000',
         },
-        stdio: ['inherit', 'pipe', 'pipe'],
-    });
-
-    command.stdout?.on('data', (data) => {
-        console.log(data.toString());
-    });
-
-    command.stderr?.on('data', (data) => {
-        console.error(data.toString());
+        stdio: 'inherit',
     });
 
     process.on('exit', () => {
