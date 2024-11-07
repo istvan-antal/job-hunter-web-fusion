@@ -1,12 +1,13 @@
-import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
-import cleanTree from '../../core/cleanTree';
-import type { Job } from '../../core/job';
-// import { applyToJob, dismissJob } from '../actions';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { grey, indigo } from '@mui/material/colors';
 import Link from '@mui/material/Link';
+import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
+import cleanTree from '../../core/cleanTree';
+import type { Job } from '../../core/job';
+import useApplyToJob from '../hooks/useApplyToJob';
+import useDismissJob from '../hooks/useDismissJob';
 import { ElapsedTime } from './ElapsedTime';
 import { PayRateView } from './PayRateView';
 import { SourceIcon } from './SourceIcon';
@@ -36,6 +37,8 @@ const computeBorderColor = (jobState: JobState) => {
 };
 
 const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) => {
+    const dismissJob = useDismissJob();
+    const applyToJob = useApplyToJob();
     const [jobState, setJobState] = useState(JobState.Default);
     const didClickOnActionButton = useRef(false);
 
@@ -86,13 +89,12 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
             flexDirection="column"
             sx={{
                 backgroundColor: computeBorderColor(jobState),
+                opacity: jobState === JobState.Dismissing || jobState === JobState.Dismissed ? 10 : undefined,
             }}
             padding={3}
             borderRadius={2}
             className={clsx('border shadow-sm rounded-xl dark:border-neutral-700 dark:shadow-neutral-700/70', {
                 'bg-white dark:bg-neutral-900': jobState === JobState.Default,
-                'bg-white dark:bg-neutral-900 opacity-50': jobState === JobState.Dismissing,
-                'bg-white dark:bg-neutral-900 opacity-10': jobState === JobState.Dismissed,
             })}
         >
             <Box display="flex" gap={5}>
@@ -107,7 +109,6 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
 
                                     setJobState(JobState.Dismissing);
 
-                                    /*
                                     applyToJob(job)
                                         .then(() => {
                                             setJobState(JobState.Dismissed);
@@ -116,7 +117,6 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                                         .catch((error) => {
                                             throw error;
                                         });
-                                    */
                                 }}
                             >
                                 <img src="/apply.svg" alt="apply" />
@@ -129,7 +129,6 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
 
                                     setJobState(JobState.Dismissing);
 
-                                    /*
                                     dismissJob(job)
                                         .then(() => {
                                             setJobState(JobState.Dismissed);
@@ -138,7 +137,6 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                                         .catch((error) => {
                                             throw error;
                                         });
-                                    */
                                 }}
                             >
                                 <img src="/dismiss.svg" alt="dismiss" />
