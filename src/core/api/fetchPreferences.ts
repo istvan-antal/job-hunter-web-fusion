@@ -18,7 +18,7 @@ async function fetchPreferences() {
         flaggedPhrases,
         flaggedTitlePhrases: [] as string[],
         highlights: ['Duration', 'Location', 'Day Rate', 'Hybrid'],
-        goodHighlights: ['Remote'],
+        goodHighlights: ['Remote', 'Outside IR35'],
     };
 }
 
