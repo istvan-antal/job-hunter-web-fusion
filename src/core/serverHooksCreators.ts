@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export type DataLoading = {
     loading: true;
@@ -18,38 +20,29 @@ export type DataComplete<R> = {
     error: undefined;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AsyncFn = (...args: any[]) => Promise<unknown>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Pop<T extends any[]> = T extends [...infer U, any] ? U : never;
 
 export function createServerHook<T extends AsyncFn>(functionName: string) {
-    return async (
-        ...params: Pop<Parameters<T>>
-    ): Promise<Awaited<ReturnType<T>>> => {
+    return async (...params: Pop<Parameters<T>>): Promise<Awaited<ReturnType<T>>> => {
         const result = await fetch(`/api/${functionName}`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(params),
         });
 
         if (result.status !== 200) {
-            throw new Error(
-                `Response status code: ${result.status} ${result.statusText}`,
-            );
+            throw new Error(`Response status code: ${result.status} ${result.statusText}`);
         }
 
         return result.json() as Awaited<ReturnType<T>>;
     };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function createServerQueryHook<
-    T extends (...args: any[]) => Promise<unknown>,
->(functionName: string) {
+export function createServerQueryHook<T extends (...args: any[]) => Promise<unknown>>(functionName: string) {
     return ({
         params,
         skip = false,
@@ -60,9 +53,7 @@ export function createServerQueryHook<
         skip?: boolean;
     }) => {
         const active = useRef(true);
-        const [state, setState] = useState<
-            DataLoading | DataError | DataComplete<Awaited<ReturnType<T>>>
-        >({
+        const [state, setState] = useState<DataLoading | DataError | DataComplete<Awaited<ReturnType<T>>>>({
             data: undefined,
             loading: true,
             error: undefined,
@@ -79,9 +70,9 @@ export function createServerQueryHook<
                         });
                     }
                     const result = await fetch(`/api/${functionName}`, {
-                        method: "POST",
+                        method: 'POST',
                         headers: {
-                            "Content-Type": "application/json",
+                            'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(params),
                     });
@@ -91,9 +82,7 @@ export function createServerQueryHook<
                     }
 
                     if (result.status !== 200) {
-                        throw new Error(
-                            `Response status code: ${result.status} ${result.statusText}`,
-                        );
+                        throw new Error(`Response status code: ${result.status} ${result.statusText}`);
                     }
 
                     setState({
@@ -116,9 +105,7 @@ export function createServerQueryHook<
             if (!skip) {
                 reload();
 
-                const interval = pollInterval
-                    ? setInterval(reload, pollInterval)
-                    : undefined;
+                const interval = pollInterval ? setInterval(reload, pollInterval) : undefined;
 
                 return () => {
                     if (interval && pollInterval) {
