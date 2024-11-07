@@ -10,7 +10,8 @@ const cleanElement = (node: Element | HTMLElement) => {
     if (
         node.tagName.toLowerCase() === 'img' ||
         node.tagName.toLowerCase() === 'image' ||
-        node.tagName.toLowerCase() === 'svg'
+        node.tagName.toLowerCase() === 'svg' ||
+        node.tagName.toLowerCase() === 'button'
     ) {
         node.parentNode?.removeChild(node);
     }
@@ -52,7 +53,8 @@ const cleanTree = (html: string) => {
         if (
             currentNode.tagName.toLowerCase() === 'img' ||
             currentNode.tagName.toLowerCase() === 'image' ||
-            currentNode.tagName.toLowerCase() === 'svg'
+            currentNode.tagName.toLowerCase() === 'svg' ||
+            currentNode.tagName.toLowerCase() === 'button'
         ) {
             currentNode.parentNode?.removeChild(currentNode);
             for (const attribute of currentNode.attributes) {
