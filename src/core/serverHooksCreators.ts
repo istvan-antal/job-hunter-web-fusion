@@ -116,6 +116,7 @@ export function createServerQueryHook<T extends (...args: any[]) => Promise<unkn
         }, [JSON.stringify(params), skip]);
 
         useEffect(() => {
+            active.current = true;
             return () => {
                 active.current = false;
             };

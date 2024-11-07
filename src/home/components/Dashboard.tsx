@@ -4,7 +4,7 @@ import JobCard from './JobCard';
 function Dashboard() {
     const { error, data, loading, reload } = useJobs({
         params: [],
-        pollInterval: 30_000,
+        pollInterval: 10_000,
     });
 
     if (error) {
@@ -18,6 +18,10 @@ function Dashboard() {
     const onRemove = () => {
         reload();
     };
+
+    if (!data.length) {
+        return <>No jobs on the market yet.</>;
+    }
 
     return (
         <>
