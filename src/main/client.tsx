@@ -8,7 +8,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import Layout from '../core/components/Layout.tsx';
+import PreferenceProvider from '../core/components/PreferenceProvider.tsx';
 import Dashboard from '../home/components/Dashboard.tsx';
+import Preferences from '../preferences/components/Preferences.tsx';
 
 const router = createBrowserRouter([
     {
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path: '/',
                 element: <Dashboard />,
+            },
+            {
+                path: '/preferences',
+                element: <Preferences />,
             },
         ],
     },
@@ -43,7 +49,9 @@ createRoot(root).render(
     <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <RouterProvider router={router} />
+            <PreferenceProvider>
+                <RouterProvider router={router} />
+            </PreferenceProvider>
         </Box>
     </ThemeProvider>,
 );

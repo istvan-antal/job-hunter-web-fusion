@@ -2,16 +2,22 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { type ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
+import Link from './Link';
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = memo(({ children }: { children: ReactNode }) => {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar variant="regular" sx={{ gap: 2 }}>
-                    <Typography variant="h6" component="div">
-                        Job Hunter
-                    </Typography>
+                    <Link to="/" sx={{ textDecoration: 'none' }}>
+                        <Typography variant="h6" component="div">
+                            Job Hunter
+                        </Typography>
+                    </Link>
+                    <Link to="/preferences" sx={{ textDecoration: 'none' }}>
+                        Preferences
+                    </Link>
                     <Box sx={{ flexGrow: 1 }}></Box>
                 </Toolbar>
             </AppBar>
@@ -27,6 +33,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
             </Box>
         </Box>
     );
-};
+});
 
 export default Layout;

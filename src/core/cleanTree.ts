@@ -7,6 +7,10 @@ const cleanElement = (node: Element | HTMLElement) => {
         node.removeAttribute('style');
     }
 
+    if (node.hasAttribute('href')) {
+        node.removeAttribute('href');
+    }
+
     if (
         node.tagName.toLowerCase() === 'img' ||
         node.tagName.toLowerCase() === 'image' ||

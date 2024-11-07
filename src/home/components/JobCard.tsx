@@ -1,10 +1,11 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { grey, indigo } from '@mui/material/colors';
+import { grey, indigo, red } from '@mui/material/colors';
 import Link from '@mui/material/Link';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import cleanTree from '../../core/cleanTree';
+import PreferenceContext from '../../core/components/PreferenceContext';
 import type { Job } from '../../core/job';
 import useApplyToJob from '../hooks/useApplyToJob';
 import useDismissJob from '../hooks/useDismissJob';
@@ -19,14 +20,6 @@ enum JobState {
     Active = 3,
 }
 
-const flaggedPhrases: string[] = [];
-
-const flaggedTitlePhrases: string[] = [];
-
-const highlights = ['Duration', 'Location', 'Day Rate', 'Hybrid'];
-
-const goodHighlights = ['Remote'];
-
 const computeBorderColor = (jobState: JobState) => {
     switch (true) {
         case jobState === JobState.Active:
@@ -37,6 +30,7 @@ const computeBorderColor = (jobState: JobState) => {
 };
 
 const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) => {
+    const { goodHighlights, flaggedPhrases, flaggedTitlePhrases, highlights } = useContext(PreferenceContext);
     const dismissJob = useDismissJob();
     const applyToJob = useApplyToJob();
     const [jobState, setJobState] = useState(JobState.Default);
@@ -99,7 +93,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
         >
             <Box display="flex" gap={5}>
                 <Box flexShrink={0}>
-                    <Box display="flex" flexDirection="column" justifyItems="start" gap={5}>
+                    <Box display="flex" flexDirection="column" justifyItems="start" gap={2}>
                         <PayRateView job={job} />
                         <Box display="flex" gap={1}>
                             <Button
@@ -145,9 +139,9 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                         <ElapsedTime time={new Date(job.created)} />
                         {!!flaggedContent.length &&
                             flaggedContent.map((item) => (
-                                <div key={item} className="text-red-600">
+                                <Box key={item} color={red['400']}>
                                     {item}
-                                </div>
+                                </Box>
                             ))}
                     </Box>
                 </Box>

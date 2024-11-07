@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import useJobs from '../hooks/useJobs';
 import JobCard from './JobCard';
 
-function Dashboard() {
+const Dashboard = memo(() => {
     const { error, data, loading, reload } = useJobs({
         params: [],
         pollInterval: 10_000,
@@ -30,6 +31,6 @@ function Dashboard() {
             ))}
         </>
     );
-}
+});
 
 export default Dashboard;
