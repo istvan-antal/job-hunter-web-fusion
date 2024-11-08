@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { grey, indigo, red } from '@mui/material/colors';
+import { blue, grey, red } from '@mui/material/colors';
 import Link from '@mui/material/Link';
 import clsx from 'clsx';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -23,7 +23,7 @@ enum JobState {
 const computeBorderColor = (jobState: JobState) => {
     switch (true) {
         case jobState === JobState.Active:
-            return indigo['600'];
+            return blue['900'];
         default:
             return grey['900'];
     }

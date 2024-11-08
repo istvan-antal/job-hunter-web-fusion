@@ -27,6 +27,23 @@ const cleanElement = (node: Element | HTMLElement) => {
     }
 };
 
+const removeEmptyElements = (node: Element | ChildNode | HTMLElement): boolean => {
+    if (node.nodeName === '#comment' || (isHTMLElement(node) && !node.innerHTML.trim())) {
+        node.remove();
+        return true;
+    }
+
+    let result = false;
+
+    if (node.childNodes.length) {
+        for (const child of node.childNodes) {
+            result = result || removeEmptyElements(child);
+        }
+    }
+
+    return result;
+};
+
 const cleanTree = (html: string) => {
     let current: Element = document.createElement('div');
     current.innerHTML = html;
@@ -88,6 +105,10 @@ const cleanTree = (html: string) => {
                 // console.log(content, content === '<br />' || content === '<br>');
             }
         }
+    }
+
+    while (removeEmptyElements(current)) {
+        //
     }
 
     return current.innerHTML;
