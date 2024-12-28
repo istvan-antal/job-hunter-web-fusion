@@ -46,8 +46,6 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
         ...flaggedPhrases.filter((word) => job.description.toLowerCase().includes(word.toLowerCase())),
     ];
 
-    const [description, setDescription] = useState('');
-
     useEffect(() => {
         let currentDescription = cleanTree(job.description);
 
@@ -71,6 +69,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                 (value) => `<span style="color: green">${value}</span>`,
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [job.description]);
 
     return (
