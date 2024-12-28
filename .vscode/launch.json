@@ -8,7 +8,7 @@
             "name": "App",
             "request": "launch",
             "type": "bun",
-            "watchMode": true,
+            "watchMode": false,
             "program": "./src/main/server.ts",
             "env": {
                 "CLIENT_DEV": "1"

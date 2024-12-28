@@ -1,9 +1,13 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import { blue, grey, red } from '@mui/material/colors';
 import Link from '@mui/material/Link';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import { useContext, useEffect, useRef, useState } from 'react';
+import Markdown from 'react-markdown';
 import cleanTree from '../../core/cleanTree';
 import PreferenceContext from '../../core/components/PreferenceContext';
 import type { Job } from '../../core/job';
@@ -35,6 +39,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
     const applyToJob = useApplyToJob();
     const [jobState, setJobState] = useState(JobState.Default);
     const didClickOnActionButton = useRef(false);
+    const [showOriginal, setShowOriginal] = useState(false);
 
     const flaggedContent = [
         ...flaggedTitlePhrases.filter((word) => job.title.toLowerCase().includes(word.toLowerCase())),
@@ -66,8 +71,6 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                 (value) => `<span style="color: green">${value}</span>`,
             );
         }
-
-        setDescription(currentDescription);
     }, [job.description]);
 
     return (
@@ -97,6 +100,9 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                         <PayRateView job={job} />
                         <Box display="flex" gap={1}>
                             <Button
+                                sx={{
+                                    opacity: job.should_apply ? undefined : 0.4,
+                                }}
                                 variant="contained"
                                 onClick={() => {
                                     didClickOnActionButton.current = true;
@@ -116,6 +122,9 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                                 <img src="/apply.svg" alt="apply" />
                             </Button>
                             <Button
+                                sx={{
+                                    opacity: job.should_apply ? 0.4 : undefined,
+                                }}
                                 variant="contained"
                                 color="error"
                                 onClick={() => {
@@ -145,7 +154,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                             ))}
                     </Box>
                 </Box>
-                <Box className="flex flex-col items-start gap-2">
+                <Box display={'flex'} flexDirection="column" gap={1} justifyItems="start">
                     <Box
                         display="flex"
                         alignItems="center"
@@ -157,10 +166,32 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                             {job.title}
                         </Link>
                     </Box>
-                    <Box
-                        className="text-gray-500 dark:text-neutral-400"
-                        dangerouslySetInnerHTML={{ __html: description }}
-                    ></Box>
+                    <Box display="flex" gap={2} flexWrap="wrap">
+                        {job.job_keywords.map((keyword) => (
+                            <Typography key={keyword} color="grey" component="span" whiteSpace="nowrap">
+                                {keyword}
+                            </Typography>
+                        ))}
+                    </Box>
+                    <Box display="flex" gap={1} alignItems="center">
+                        {job.is_inside_ir35 && <Chip label="Inside IR35" color="error" size="small" />}
+                        {!job.is_remote && (
+                            <Chip
+                                label={`Location: ${job.location}`}
+                                color={!job.should_apply ? 'error' : 'warning'}
+                                size="small"
+                            />
+                        )}
+                        <Switch
+                            checked={showOriginal}
+                            onChange={() => {
+                                setShowOriginal(!showOriginal);
+                            }}
+                        />
+                    </Box>
+
+                    {!showOriginal && <Markdown>{job.description_summary}</Markdown>}
+                    {showOriginal && <Markdown>{job.description_text}</Markdown>}
                 </Box>
             </Box>
         </Box>

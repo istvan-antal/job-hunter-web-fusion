@@ -51,6 +51,8 @@ const cleanTree = (html: string) => {
     // Linkedin
     current.querySelector('.job-details-jobs-unified-top-card__top-buttons')?.remove();
     current.querySelector('.job-details-jobs-unified-top-card__job-title-badge')?.remove();
+    current.querySelector('[data-view-name="job-details-about-company-module"]')?.remove();
+    current.querySelector('[id="how-you-match-card-title"]')?.parentElement?.remove();
 
     while (current && current.children.length === 1) {
         const next = current.children[0];
