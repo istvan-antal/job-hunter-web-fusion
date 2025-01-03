@@ -4,6 +4,8 @@ export const SourceIcon = ({ source }: { source: string }) => {
             return <img src="/sources/linkedin.svg" alt="Linkedin" width={24} height={24} />;
         case 'upwork':
             return <img src="/sources/upwork.svg" alt="UpWork" width={24} height={24} />;
+        case 'total_jobs':
+            return <img src="/sources/total_jobs.svg" alt="UpWork" width={24} height={24} />;
         default:
             return (
                 <div className="size-[24px] flex items-center overflow-hidden bg-sky-400 rounded-md border-2 border-blue-700 b">
