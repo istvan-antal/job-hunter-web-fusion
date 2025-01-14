@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import { useContext, useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
-import cleanTree from '../../core/cleanTree';
 import PreferenceContext from '../../core/components/PreferenceContext';
 import type { Job } from '../../core/job';
 import useApplyToJob from '../hooks/useApplyToJob';
@@ -47,7 +46,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
     ];
 
     useEffect(() => {
-        let currentDescription = cleanTree(job.description);
+        let currentDescription = job.description;
 
         for (const flaggedPhrase of flaggedPhrases) {
             currentDescription = currentDescription.replaceAll(
