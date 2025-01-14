@@ -1,26 +1,15 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
-import { blue, grey, red } from '@mui/material/colors';
+import { blue, grey } from '@mui/material/colors';
 import Link from '@mui/material/Link';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
-import PreferenceContext from '../../core/components/PreferenceContext';
 import type { Job } from '../../core/job';
-import useApplyToJob from '../hooks/useApplyToJob';
-import useDismissJob from '../hooks/useDismissJob';
-import { ElapsedTime } from './ElapsedTime';
-import { PayRateView } from './PayRateView';
+import useJobState, { JobState } from '../hooks/useJobState';
+import JobDecisionPanel from './JobDecisionPanel';
 import { SourceIcon } from './SourceIcon';
-
-enum JobState {
-    Default = 0,
-    Dismissing = 1,
-    Dismissed = 2,
-    Active = 3,
-}
 
 const computeBorderColor = (jobState: JobState) => {
     switch (true) {
@@ -32,17 +21,9 @@ const computeBorderColor = (jobState: JobState) => {
 };
 
 const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) => {
-    const { flaggedPhrases, flaggedTitlePhrases } = useContext(PreferenceContext);
-    const dismissJob = useDismissJob();
-    const applyToJob = useApplyToJob();
-    const [jobState, setJobState] = useState(JobState.Default);
+    const [jobState, setJobState] = useJobState();
     const didClickOnActionButton = useRef(false);
     const [showOriginal, setShowOriginal] = useState(false);
-
-    const flaggedContent = [
-        ...flaggedTitlePhrases.filter((word) => job.title.toLowerCase().includes(word.toLowerCase())),
-        ...flaggedPhrases.filter((word) => job.description.toLowerCase().includes(word.toLowerCase())),
-    ];
 
     return (
         <Box
@@ -63,80 +44,9 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
             borderRadius={2}
         >
             <Box display="flex" gap={5}>
-                <Box flexShrink={0}>
-                    <Box display="flex" flexDirection="column" justifyItems="start" gap={2}>
-                        <PayRateView job={job} />
-                        <Box display="flex" gap={1}>
-                            <Button
-                                sx={{
-                                    opacity: job.should_apply ? undefined : 0.4,
-                                }}
-                                variant="contained"
-                                onClick={() => {
-                                    didClickOnActionButton.current = true;
-
-                                    setJobState(JobState.Dismissing);
-
-                                    applyToJob(job)
-                                        .then(() => {
-                                            setJobState(JobState.Dismissed);
-                                            onRemove(job);
-                                        })
-                                        .catch((error) => {
-                                            throw error;
-                                        });
-                                }}
-                            >
-                                <img src="/apply.svg" alt="apply" />
-                            </Button>
-                            <Button
-                                sx={{
-                                    opacity: job.should_apply ? 0.4 : undefined,
-                                }}
-                                variant="contained"
-                                color="error"
-                                onClick={() => {
-                                    didClickOnActionButton.current = true;
-
-                                    setJobState(JobState.Dismissing);
-
-                                    dismissJob(job)
-                                        .then(() => {
-                                            setJobState(JobState.Dismissed);
-                                            onRemove(job);
-                                        })
-                                        .catch((error) => {
-                                            throw error;
-                                        });
-                                }}
-                            >
-                                <img src="/dismiss.svg" alt="dismiss" />
-                            </Button>
-                        </Box>
-                        <ElapsedTime time={new Date(job.created)} />
-                        {!!flaggedContent.length &&
-                            flaggedContent.map((item) => (
-                                <Box key={item} color={red['400']}>
-                                    {item}
-                                </Box>
-                            ))}
-                        <Chip
-                            label={job.suggest_apply ? 'YES' : 'NO'}
-                            color={!job.suggest_apply ? 'error' : 'success'}
-                            size="small"
-                        />
-                        <Box color="error" width={180}>
-                            {job.compatibility_text}
-                        </Box>
-                    </Box>
-                </Box>
+                <JobDecisionPanel job={job} onRemove={onRemove} setJobState={setJobState} />
                 <Box display={'flex'} flexDirection="column" gap={1} justifyItems="start">
-                    <Box
-                        display="flex"
-                        alignItems="center"
-                        gap={1}
-                        className="gap-2 text-lg font-bold text-gray-800 dark:text-white"
-                    >
+                    <Box display="flex" alignItems="center" gap={1}>
                         <SourceIcon source={job.source} />
                         <Link
                             fontSize={24}
