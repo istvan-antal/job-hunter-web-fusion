@@ -5,8 +5,7 @@ import { blue, grey, red } from '@mui/material/colors';
 import Link from '@mui/material/Link';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import PreferenceContext from '../../core/components/PreferenceContext';
 import type { Job } from '../../core/job';
@@ -33,7 +32,7 @@ const computeBorderColor = (jobState: JobState) => {
 };
 
 const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) => {
-    const { goodHighlights, flaggedPhrases, flaggedTitlePhrases, highlights } = useContext(PreferenceContext);
+    const { flaggedPhrases, flaggedTitlePhrases } = useContext(PreferenceContext);
     const dismissJob = useDismissJob();
     const applyToJob = useApplyToJob();
     const [jobState, setJobState] = useState(JobState.Default);
@@ -44,32 +43,6 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
         ...flaggedTitlePhrases.filter((word) => job.title.toLowerCase().includes(word.toLowerCase())),
         ...flaggedPhrases.filter((word) => job.description.toLowerCase().includes(word.toLowerCase())),
     ];
-
-    useEffect(() => {
-        let currentDescription = job.description;
-
-        for (const flaggedPhrase of flaggedPhrases) {
-            currentDescription = currentDescription.replaceAll(
-                new RegExp(flaggedPhrase.replaceAll('.', '\\.'), 'gi'),
-                (value) => `<span style="color: red">${value}</span>`,
-            );
-        }
-
-        for (const highlight of highlights) {
-            currentDescription = currentDescription.replaceAll(
-                new RegExp(highlight.replaceAll('.', '\\.'), 'gi'),
-                (value) => `<span style="color: purple">${value}</span>`,
-            );
-        }
-
-        for (const highlight of goodHighlights) {
-            currentDescription = currentDescription.replaceAll(
-                new RegExp(highlight.replaceAll('.', '\\.'), 'gi'),
-                (value) => `<span style="color: green">${value}</span>`,
-            );
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [job.description]);
 
     return (
         <Box
@@ -88,9 +61,6 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
             }}
             padding={3}
             borderRadius={2}
-            className={clsx('border shadow-sm rounded-xl dark:border-neutral-700 dark:shadow-neutral-700/70', {
-                'bg-white dark:bg-neutral-900': jobState === JobState.Default,
-            })}
         >
             <Box display="flex" gap={5}>
                 <Box flexShrink={0}>
