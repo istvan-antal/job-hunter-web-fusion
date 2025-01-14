@@ -151,6 +151,14 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                                     {item}
                                 </Box>
                             ))}
+                        <Chip
+                            label={job.suggest_apply ? 'YES' : 'NO'}
+                            color={!job.suggest_apply ? 'error' : 'success'}
+                            size="small"
+                        />
+                        <Box color="error" width={180}>
+                            {job.compatibility_text}
+                        </Box>
                     </Box>
                 </Box>
                 <Box display={'flex'} flexDirection="column" gap={1} justifyItems="start">
@@ -161,7 +169,13 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                         className="gap-2 text-lg font-bold text-gray-800 dark:text-white"
                     >
                         <SourceIcon source={job.source} />
-                        <Link fontSize={24} sx={{ textDecoration: 'none' }} href={job.url} target="_blank">
+                        <Link
+                            fontSize={24}
+                            sx={{ textDecoration: 'none' }}
+                            rel="noreferrer noopener"
+                            href={job.url}
+                            target="_blank"
+                        >
                             {job.title}
                         </Link>
                     </Box>
