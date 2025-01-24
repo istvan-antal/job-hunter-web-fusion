@@ -27,7 +27,7 @@ const Dashboard = memo(() => {
     return (
         <>
             {data.map((job) => (
-                <JobCard key={job._id.toString()} job={job} onRemove={onRemove} />
+                <JobCard key={job.id.toString()} job={job} onRemove={onRemove} />
             ))}
         </>
     );

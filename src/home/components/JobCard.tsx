@@ -6,7 +6,7 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
-import type { Job } from '../../core/job';
+import type { Job } from '../../../../job-hunter/entities/Job';
 import useJobState, { JobState } from '../hooks/useJobState';
 import JobDecisionPanel from './JobDecisionPanel';
 import { SourceIcon } from './SourceIcon';
@@ -59,18 +59,18 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                         </Link>
                     </Box>
                     <Box display="flex" gap={2} flexWrap="wrap">
-                        {job.job_keywords.map((keyword) => (
+                        {job.jobKeywords.map((keyword) => (
                             <Typography key={keyword} color="grey" component="span" whiteSpace="nowrap">
                                 {keyword}
                             </Typography>
                         ))}
                     </Box>
                     <Box display="flex" gap={1} alignItems="center">
-                        {job.is_inside_ir35 && <Chip label="Inside IR35" color="error" size="small" />}
-                        {!job.is_remote && (
+                        {job.isInsideIr35 && <Chip label="Inside IR35" color="error" size="small" />}
+                        {!job.isRemote && (
                             <Chip
                                 label={`Location: ${job.location}`}
-                                color={!job.should_apply ? 'error' : 'warning'}
+                                color={!job.shouldApply ? 'error' : 'warning'}
                                 size="small"
                             />
                         )}
@@ -82,8 +82,8 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                         />
                     </Box>
 
-                    {!showOriginal && <Markdown>{job.description_summary}</Markdown>}
-                    {showOriginal && <Markdown>{job.description_text}</Markdown>}
+                    {!showOriginal && <Markdown>{job.descriptionSummary}</Markdown>}
+                    {showOriginal && <Markdown>{job.descriptionText}</Markdown>}
                 </Box>
             </Box>
         </Box>

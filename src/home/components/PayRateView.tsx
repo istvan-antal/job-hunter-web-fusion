@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import type { Job } from '../../core/job';
+import type { Job } from '../../../../job-hunter/entities/Job';
 import type { Currency } from '../../core/pay-rate';
 
 const currencySymbols = new Map<Currency, string>([
@@ -10,22 +10,22 @@ const currencySymbols = new Map<Currency, string>([
 
 export const PayRateView = ({ job }: { job: Job }) => {
     let content = '';
-    switch (job.pay_rate.type) {
+    switch (job.payRate.type) {
         case 'hourly':
-            content = `${currencySymbols.get(job.pay_rate.currency)}${job.pay_rate.max} / hour`;
+            content = `${currencySymbols.get(job.payRate.currency)}${job.payRate.max} / hour`;
             break;
         case 'daily':
-            content = `${currencySymbols.get(job.pay_rate.currency)}${job.pay_rate.max} / day`;
+            content = `${currencySymbols.get(job.payRate.currency)}${job.payRate.max} / day`;
             break;
         case 'yearly':
-            content = `${currencySymbols.get(job.pay_rate.currency)}${job.pay_rate.max} / year`;
+            content = `${currencySymbols.get(job.payRate.currency)}${job.payRate.max} / year`;
             break;
         default:
-            content = job.salary_text || 'unknown';
+            content = job.salaryText || 'unknown';
     }
 
     return (
-        <Box width={180} className="overflow-hidden whitespace-nowrap text-ellipsis" title={job.salary_text}>
+        <Box width={180} className="overflow-hidden whitespace-nowrap text-ellipsis" title={job.salaryText}>
             {content}
         </Box>
     );

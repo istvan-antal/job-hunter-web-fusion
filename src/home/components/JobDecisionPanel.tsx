@@ -3,8 +3,8 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import { red } from '@mui/material/colors';
 import { useContext, useRef } from 'react';
+import type { Job } from '../../../../job-hunter/entities/Job';
 import PreferenceContext from '../../core/components/PreferenceContext';
-import type { Job } from '../../core/job';
 import useApplyToJob from '../hooks/useApplyToJob';
 import useDismissJob from '../hooks/useDismissJob';
 import { JobState } from '../hooks/useJobState';
@@ -35,7 +35,7 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                 <Box display="flex" gap={1}>
                     <Button
                         sx={{
-                            opacity: job.should_apply ? undefined : 0.4,
+                            opacity: job.shouldApply ? undefined : 0.4,
                         }}
                         variant="contained"
                         onClick={() => {
@@ -57,7 +57,7 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                     </Button>
                     <Button
                         sx={{
-                            opacity: job.should_apply ? 0.4 : undefined,
+                            opacity: job.shouldApply ? 0.4 : undefined,
                         }}
                         variant="contained"
                         color="error"
@@ -87,12 +87,12 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                         </Box>
                     ))}
                 <Chip
-                    label={job.suggest_apply ? 'YES' : 'NO'}
-                    color={!job.suggest_apply ? 'error' : 'success'}
+                    label={job.suggestApply ? 'YES' : 'NO'}
+                    color={!job.suggestApply ? 'error' : 'success'}
                     size="small"
                 />
                 <Box color="error" width={180}>
-                    {job.compatibility_text}
+                    {job.compatibilityText}
                 </Box>
             </Box>
         </Box>

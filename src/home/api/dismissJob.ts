@@ -1,13 +1,17 @@
-import { ObjectId } from 'mongodb';
+// import { ObjectId } from 'mongodb';
+import { Job } from '../../../../job-hunter/entities/Job';
 import type { Context } from '../../core/context';
-import { connectToDatabase } from '../../core/db';
-import type { Job } from '../../core/job';
+import { dataSource } from '../../core/db';
+// import { connectToDatabase } from '../../core/db';
+// import type { Job } from '../../core/job';
 
 export default async function dismissJob(job: Job, _context: Context) {
-    const collection = (await connectToDatabase()).collection('jobs');
+    const repository = dataSource.getRepository(Job);
 
-    await collection.updateOne(
-        { _id: new ObjectId(job._id) },
-        { $set: { dismissed: true, hidden: true, updated: new Date() } },
+    await repository.update(
+        {
+            id: job.id,
+        },
+        { dismissed: true, hidden: true, updated: new Date() },
     );
 }
