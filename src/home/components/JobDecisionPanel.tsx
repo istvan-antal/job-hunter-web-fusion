@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import { red } from '@mui/material/colors';
+import Typography from '@mui/material/Typography';
 import { useContext, useRef } from 'react';
 import type { Job } from '../../../../job-hunter/entities/Job';
 import PreferenceContext from '../../core/components/PreferenceContext';
@@ -94,6 +95,13 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                 <Box color="error" width={180}>
                     {job.compatibilityText}
                 </Box>
+                {job.company && (
+                    <Box>
+                        <Typography fontSize={18} component="h3">
+                            {job.company}
+                        </Typography>
+                    </Box>
+                )}
             </Box>
         </Box>
     );
