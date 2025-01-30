@@ -7,10 +7,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import AnalyzeJob from '../analyze/components/AnalyzeJob.tsx';
 import Layout from '../core/components/Layout.tsx';
 import PreferenceProvider from '../core/components/PreferenceProvider.tsx';
 import Dashboard from '../home/components/Dashboard.tsx';
 import Preferences from '../preferences/components/Preferences.tsx';
+import StatsPage from '../stats/components/StatsPage.tsx';
 
 const router = createBrowserRouter([
     {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
             {
                 path: '/preferences',
                 element: <Preferences />,
+            },
+            {
+                path: '/stats',
+                element: <StatsPage />,
+            },
+            {
+                path: '/analyze/:id',
+                element: <AnalyzeJob />,
             },
         ],
     },

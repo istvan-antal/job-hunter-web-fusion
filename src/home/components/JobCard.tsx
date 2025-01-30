@@ -1,13 +1,15 @@
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import { blue, grey } from '@mui/material/colors';
-import Link from '@mui/material/Link';
+import MuiLink from '@mui/material/Link';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import type { Job } from '../../../../job-hunter/entities/Job';
+import Link from '../../core/components/Link';
 import useJobState, { JobState } from '../hooks/useJobState';
+import CodeIcon from './CodeIcon';
 import JobDecisionPanel from './JobDecisionPanel';
 import { SourceIcon } from './SourceIcon';
 
@@ -24,6 +26,19 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
     const [jobState, setJobState] = useJobState();
     const didClickOnActionButton = useRef(false);
     const [showOriginal, setShowOriginal] = useState(false);
+
+    const descriptionSummary = useMemo(() => {
+        let result = job.descriptionSummary;
+
+        const metaTagStart = result.indexOf('<think>');
+        const metaTagEnd = result.indexOf('</think>');
+
+        if (metaTagStart !== -1 && metaTagEnd !== -1) {
+            result = result.substring(0, metaTagStart) + result.substring(metaTagEnd + '</think>'.length);
+        }
+
+        return result;
+    }, [job.descriptionSummary]);
 
     return (
         <Box
@@ -48,7 +63,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                 <Box display={'flex'} flexDirection="column" gap={1} justifyItems="start">
                     <Box display="flex" alignItems="center" gap={1}>
                         <SourceIcon source={job.source} />
-                        <Link
+                        <MuiLink
                             fontSize={24}
                             sx={{ textDecoration: 'none' }}
                             rel="noreferrer noopener"
@@ -56,7 +71,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                             target="_blank"
                         >
                             {job.title}
-                        </Link>
+                        </MuiLink>
                     </Box>
                     <Box display="flex" gap={2} flexWrap="wrap">
                         {job.jobKeywords.map((keyword) => (
@@ -80,9 +95,12 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                                 setShowOriginal(!showOriginal);
                             }}
                         />
+                        <Link to={`/analyze/${job.id}`} sx={{ textDecoration: 'none' }}>
+                            <CodeIcon />
+                        </Link>
                     </Box>
 
-                    {!showOriginal && <Markdown>{job.descriptionSummary}</Markdown>}
+                    {!showOriginal && <Markdown>{descriptionSummary}</Markdown>}
                     {showOriginal && <Markdown>{job.descriptionText}</Markdown>}
                 </Box>
             </Box>

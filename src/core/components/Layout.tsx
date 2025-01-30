@@ -18,10 +18,15 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                     <Link to="/preferences" sx={{ textDecoration: 'none' }}>
                         Preferences
                     </Link>
+                    <Link to="/stats" sx={{ textDecoration: 'none' }}>
+                        Stats
+                    </Link>
                     <Box sx={{ flexGrow: 1 }}></Box>
                 </Toolbar>
             </AppBar>
             <Box
+                display="flex"
+                flexDirection="column"
                 component="main"
                 sx={{
                     backgroundColor: (theme) =>
@@ -29,7 +34,14 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                     flexGrow: 1,
                 }}
             >
-                <Box sx={{ pt: 2, pb: 2, ml: 2, mr: 2, minHeight: '100vh' }}>{children}</Box>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    flexGrow={1}
+                    sx={{ pt: 2, pb: 2, ml: 2, mr: 2, minHeight: '100vh' }}
+                >
+                    {children}
+                </Box>
             </Box>
         </Box>
     );

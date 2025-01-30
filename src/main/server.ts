@@ -15,6 +15,7 @@ if (process.env.CLIENT_DEV) {
     const command = spawn('bun', ['run', 'dev'], {
         env: {
             VITE__PORT: '14000',
+            PATH: process.env.PATH,
         },
         stdio: 'inherit',
     });
