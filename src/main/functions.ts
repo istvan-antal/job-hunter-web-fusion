@@ -1,4 +1,5 @@
 import computeJobCompatibility from '../analyze/api/computeJobCompatibility';
+import reAnalyze from '../analyze/api/reAnalyze';
 import fetchPreferences from '../core/api/fetchPreferences';
 import applyToJob from '../home/api/applyToJob';
 import dismissJob from '../home/api/dismissJob';
@@ -17,6 +18,7 @@ const functions: { [key: string]: (...args: any[]) => Promise<unknown> } = {
     addFlaggedPhrase,
     fetchStats,
     computeJobCompatibility,
+    reAnalyze,
 };
 
 export default functions;
