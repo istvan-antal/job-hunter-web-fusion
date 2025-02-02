@@ -5,7 +5,7 @@ import 'highcharts/themes/dark-unica';
 import useStats from '../hooks/useStats';
 
 const StatsPage = () => {
-    const { error, loading, data } = useStats({ params: [] });
+    const { error, loading, data } = useStats({ params: [], pollInterval: 10_000 });
 
     if (error) {
         throw error;
