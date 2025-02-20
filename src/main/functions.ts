@@ -8,8 +8,7 @@ import fetchJobs from '../home/api/fetchJobs';
 import addFlaggedPhrase from '../preferences/api/addFlaggedPhrase';
 import fetchStats from '../stats/api/fetchStats';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const functions: { [key: string]: (...args: any[]) => Promise<unknown> } = {
+const functions = {
     fetchJobs,
     fetchJob,
     applyToJob,

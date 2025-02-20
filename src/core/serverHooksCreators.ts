@@ -48,7 +48,7 @@ export function createServerQueryHook<T extends (...args: any[]) => Promise<unkn
         skip = false,
         pollInterval,
     }: {
-        params: Parameters<T>;
+        params: Pop<Parameters<T>>;
         pollInterval?: number;
         skip?: boolean;
     }) => {

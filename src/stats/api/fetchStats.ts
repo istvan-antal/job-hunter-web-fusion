@@ -1,7 +1,8 @@
 import { Job } from '../../../../job-hunter/entities/Job';
+import type { Context } from '../../core/context';
 import { dataSource } from '../../core/db';
 
-async function fetchJobs(): Promise<{ id: string; data: { value: number; date: string }[] }[]> {
+async function fetchJobs(_: Context): Promise<{ id: string; data: { value: number; date: string }[] }[]> {
     const repository = dataSource.getRepository(Job);
 
     return [

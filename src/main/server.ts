@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import { TokenExpiredError, verify } from 'jsonwebtoken';
-import { spawn } from 'node:child_process';
+import { createServer as createViteServer } from 'vite';
 import type { User } from '../core/entities/User.ts';
 import { extractCookies } from '../core/http.ts';
 import serverFunctions from './functions.ts';
@@ -10,20 +10,6 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
-
-if (process.env.CLIENT_DEV) {
-    const command = spawn('bun', ['run', 'dev'], {
-        env: {
-            VITE__PORT: '14000',
-            PATH: process.env.PATH,
-        },
-        stdio: 'inherit',
-    });
-
-    process.on('exit', () => {
-        command.kill();
-    });
-}
 
 const port = +(process.env.PORT || '14001');
 
@@ -56,7 +42,10 @@ app.post('/api/:function', (request, response) => {
             response.status(400).json({});
         }
 
-        const result = await serverFunctions[request.params.function](...args, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const result = await (serverFunctions as { [key: string]: (...args: any[]) => Promise<unknown> })[
+            request.params.function
+        ](...args, {
             user: extractUser(accessToken),
         });
 
@@ -78,6 +67,16 @@ app.use((req, _res, next) => {
     console.info(`Request: ${req.method} ${req.url}`);
     next();
 });
+
+if (process.env.CLIENT_DEV) {
+    const vite = await createViteServer({
+        // plugins: [react()],
+        server: { middlewareMode: true },
+        appType: 'mpa',
+    });
+    // Use vite's connect instance as middleware
+    app.use(vite.middlewares);
+}
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

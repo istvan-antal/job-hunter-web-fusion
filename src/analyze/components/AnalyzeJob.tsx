@@ -7,8 +7,8 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '../../core/data';
 import useComputeJobCompatibility from '../hooks/useComputeJobCompatibility';
-import useJob from '../hooks/useJob';
 import useReAnalyze from '../hooks/useReAnalyze';
 
 const AnalyzeJob = () => {
@@ -25,7 +25,7 @@ const AnalyzeJob = () => {
         loading,
         data: job,
         reload,
-    } = useJob({
+    } = useQuery('fetchJob', {
         params: [+id],
         pollInterval: 10_000,
     });

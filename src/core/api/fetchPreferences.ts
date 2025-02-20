@@ -1,6 +1,7 @@
 import { connectToDatabase } from '../../core/db';
+import type { Context } from '../context';
 
-async function fetchPreferences() {
+async function fetchPreferences(_: Context) {
     const flaggedPhrasesCollection = (await connectToDatabase()).collection('flagged_phrases');
 
     const flaggedPhrases: string[] = (

@@ -2,10 +2,10 @@ import Box from '@mui/material/Box';
 import * as Highcharts from 'highcharts';
 import { HighchartsReact } from 'highcharts-react-official';
 import 'highcharts/themes/dark-unica';
-import useStats from '../hooks/useStats';
+import { useQuery } from '../../core/data';
 
 const StatsPage = () => {
-    const { error, loading, data } = useStats({ params: [], pollInterval: 10_000 });
+    const { error, loading, data } = useQuery('fetchStats', { params: [], pollInterval: 10_000 });
 
     if (error) {
         throw error;
