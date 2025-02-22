@@ -77,6 +77,10 @@ const AnalyzeJob = () => {
                     <Typography fontSize={20}>Title</Typography>
                     <TextField value={job.title} sx={{ width: 700 }} />
                 </Box>
+                <Box display="flex" sx={{ flexDirection: 'row', gap: 2 }} alignItems="center">
+                    <Typography fontSize={20}>Source</Typography>
+                    <TextField value={job.source} sx={{ width: 700 }} />
+                </Box>
                 <Box display="flex" flexDirection="column" gap={2}>
                     <Typography fontSize={20}>Compatibility text</Typography>
                     <TextField value={job.compatibilityText} multiline />
@@ -101,7 +105,27 @@ const AnalyzeJob = () => {
                         <Markdown>{job.descriptionSummary}</Markdown>
                     </Box>
                 </Box>
+                <Box display="flex" sx={{ flexDirection: 'row', gap: 2 }} alignItems="center">
+                    <Typography fontSize={20}>Inside IR35</Typography>
+                    <Chip
+                        label={job.isInsideIr35 ? 'YES' : 'NO'}
+                        color={!job.isInsideIr35 ? 'success' : 'error'}
+                        size="small"
+                    />
+                </Box>
                 <TextField label="Result" multiline rows={4} value={result} />
+                <Box display="flex" sx={{ flexDirection: 'row', gap: 2 }} alignItems="center">
+                    <Typography fontSize={20}>Salary text</Typography>
+                    <TextField value={job.salaryText} sx={{ width: 700 }} />
+                </Box>
+                <Box display="flex" flexDirection="column" gap={2}>
+                    <Typography fontSize={20}>Description text</Typography>
+                    <Box
+                        sx={{ border: '1px solid rgb(255 255 255 / 23%)', borderRadius: '4px', padding: '16.5px 14px' }}
+                    >
+                        <Markdown>{job.descriptionText}</Markdown>
+                    </Box>
+                </Box>
             </Box>
         </Box>
     );

@@ -4,7 +4,11 @@ import JobCard from './JobCard';
 
 const Dashboard = memo(() => {
     const { error, data, loading, reload } = useJobs({
-        params: [],
+        params: [
+            {
+                hidden: false,
+            },
+        ],
         pollInterval: 10_000,
     });
 

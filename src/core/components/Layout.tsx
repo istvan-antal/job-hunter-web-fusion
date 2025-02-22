@@ -15,6 +15,9 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                             Job Hunter
                         </Typography>
                     </Link>
+                    <Link to="/search" sx={{ textDecoration: 'none' }}>
+                        Search
+                    </Link>
                     <Link to="/preferences" sx={{ textDecoration: 'none' }}>
                         Preferences
                     </Link>
