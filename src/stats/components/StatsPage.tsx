@@ -15,27 +15,50 @@ const StatsPage = () => {
         return null;
     }
 
-    const options: Highcharts.Options = {
-        title: {
-            text: 'My chart',
-        },
-        xAxis: {
-            type: 'datetime',
-        },
-        chart: {
-            height: 500,
-        },
-        series: data.map((series) => ({
-            type: 'line',
-            id: series.id,
-            name: series.id,
-            data: series.data.map((item) => [new Date(item.date).getTime(), item.value]),
-        })),
-    };
+    const { rates, counts } = data;
 
     return (
         <Box height="90vh">
-            <HighchartsReact highcharts={Highcharts} options={options} />
+            <HighchartsReact
+                highcharts={Highcharts}
+                options={{
+                    title: {
+                        text: 'GBP daily rates',
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                    },
+                    chart: {
+                        height: 500,
+                    },
+                    series: rates.map((series) => ({
+                        type: 'line',
+                        id: series.id,
+                        name: series.id,
+                        data: series.data.map((item) => [new Date(item.date).getTime(), item.value]),
+                    })),
+                }}
+            />
+            <HighchartsReact
+                highcharts={Highcharts}
+                options={{
+                    title: {
+                        text: 'Counts',
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                    },
+                    chart: {
+                        height: 500,
+                    },
+                    series: counts.map((series) => ({
+                        type: 'line',
+                        id: series.id,
+                        name: series.id,
+                        data: series.data.map((item) => [new Date(item.date).getTime(), item.value]),
+                    })),
+                }}
+            />
         </Box>
     );
 };

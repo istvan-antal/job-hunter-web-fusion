@@ -1,4 +1,4 @@
-import computeCompatibility from '../../../../job-hunter/ai/compute_compatibility';
+import computeCompatibility from '../../../../job-hunter/ai/computeCompatibility';
 import type { Context } from '../../core/context';
 
 async function computeJobCompatibility(description: string, _context: Context) {

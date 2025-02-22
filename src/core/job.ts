@@ -5,7 +5,7 @@ export interface Job {
     _id: ObjectId;
     source: string;
     title: string;
-    job_keywords: string[];
+    jobKeywords: string[];
     is_remote: boolean;
     is_inside_ir35: boolean;
     should_apply: boolean;

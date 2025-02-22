@@ -1,0 +1,9 @@
+{
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+    "version": "0.2",
+    "language": "en,en-gb",
+    "dictionaries": ["corp-terms", "fonts", "typescript", "fullstack", "html"],
+    "words": ["Antal", "highcharts"],
+    "useGitignore": true,
+    "ignorePaths": [".vscode", "./tsconfig.json", "./bun.lockb", "./docker-compose.yml"]
+}
