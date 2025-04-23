@@ -17,7 +17,10 @@ async function fetchJobs(_: Context): Promise<{
                         .createQueryBuilder('j')
                         .select(`ROUND(AVG(("payRate" ->> 'max')::FLOAT)) AS "value", DATE(j.created) as "date"`)
                         .where(
-                            `"payRate" != '{"type": "unknown"}' AND "payRate" ->> 'currency' = 'GBP' AND "payRate" ->> 'type' = 'daily' AND "isInsideIr35" IS FALSE`,
+                            `"payRate" != '{"type": "unknown"}' AND 
+                            "payRate" ->> 'currency' = 'GBP' AND 
+                            "payRate" ->> 'type' = 'daily' AND 
+                            "isInsideIr35" IS FALSE`,
                         )
                         .groupBy('DATE(j.created)')
                         .orderBy('DATE(j.created)', 'DESC')
@@ -34,7 +37,11 @@ async function fetchJobs(_: Context): Promise<{
                         .createQueryBuilder('j')
                         .select(`ROUND(AVG(("payRate" ->> 'max')::FLOAT)) AS "value", DATE(j.created) as "date"`)
                         .where(
-                            `"payRate" != '{"type": "unknown"}' AND "payRate" ->> 'currency' = 'GBP' AND "payRate" ->> 'type' = 'daily' AND "isInsideIr35" IS FALSE AND j."suggestApply" IS TRUE`,
+                            `"payRate" != '{"type": "unknown"}' AND 
+                            "payRate" ->> 'currency' = 'GBP' AND 
+                            "payRate" ->> 'type' = 'daily' AND 
+                            "isInsideIr35" IS FALSE AND 
+                            "suggestApply" IS TRUE`,
                         )
                         .groupBy('DATE(j.created)')
                         .orderBy('DATE(j.created)', 'DESC')

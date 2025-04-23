@@ -68,6 +68,7 @@ const SearchPage = memo(() => {
                             <TableCell>{job.payRate.type}</TableCell>
                             <TableCell>{job.salaryText}</TableCell>
                             <TableCell>{job.isInsideIr35 && 'Inside IR35'}</TableCell>
+                            <TableCell>{job.suggestApply && 'SUGGEST'}</TableCell>
                             <TableCell>{job.title}</TableCell>
                             <TableCell>{job.source}</TableCell>
                         </TableRow>
