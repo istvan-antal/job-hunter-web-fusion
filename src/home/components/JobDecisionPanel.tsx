@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
 import { red } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 import { useContext, useRef } from 'react';
@@ -47,7 +46,7 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                                 borderWidth: '4px',
                                 transform: 'translate(-2px, -2px)',
                                 boxShadow: '4px 4px 0px #000',
-                            }
+                            },
                         }}
                         variant="contained"
                         color="success"
@@ -81,7 +80,7 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                                 borderWidth: '4px',
                                 transform: 'translate(-2px, -2px)',
                                 boxShadow: '4px 4px 0px #000',
-                            }
+                            },
                         }}
                         variant="contained"
                         color="error"
@@ -110,11 +109,6 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                             {item}
                         </Box>
                     ))}
-                <Chip
-                    label={job.suggestApply ? 'YES' : 'NO'}
-                    color={!job.suggestApply ? 'error' : 'success'}
-                    size="small"
-                />
                 <Box color="error" width={180}>
                     {job.compatibilityText}
                 </Box>

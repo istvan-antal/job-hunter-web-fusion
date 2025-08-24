@@ -109,6 +109,30 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                             {job.title}
                         </MuiLink>
                     </Box>
+
+                    {!job.isRemote && (
+                        <Box display="flex" gap={2} flexWrap="wrap">
+                            <Typography
+                                component="span"
+                                whiteSpace="nowrap"
+                                sx={{
+                                    color: !job.shouldApply ? '#fff' : '#000',
+                                    fontSize: '0.85rem',
+                                    fontWeight: 900,
+                                    backgroundColor: !job.shouldApply ? '#f44336' : '#ff9800',
+                                    px: 1.5,
+                                    py: 0.5,
+                                    borderRadius: 0,
+                                    border: '2px solid #000',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                }}
+                            >
+                                Location: {job.location}
+                            </Typography>
+                        </Box>
+                    )}
+
                     <Box display="flex" gap={2} flexWrap="wrap">
                         {job.missingTechnologies?.map((tech) => (
                             <Typography
@@ -176,13 +200,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                     </Box>
                     <Box display="flex" gap={1} alignItems="center">
                         {job.isInsideIr35 && <Chip label="Inside IR35" color="error" size="small" />}
-                        {!job.isRemote && (
-                            <Chip
-                                label={`Location: ${job.location}`}
-                                color={!job.shouldApply ? 'error' : 'warning'}
-                                size="small"
-                            />
-                        )}
+
                         <Switch
                             checked={showOriginal}
                             onChange={() => {
