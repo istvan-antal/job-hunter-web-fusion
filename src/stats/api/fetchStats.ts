@@ -2,11 +2,23 @@ import { Job } from '../../../../job-hunter/entities/Job';
 import type { Context } from '../../core/context';
 import { dataSource } from '../../core/db';
 
-async function fetchJobs(_: Context): Promise<{
+async function fetchJobs(granularity: 'daily' | 'weekly' | 'monthly' | 'yearly', _: Context): Promise<{
     rates: { id: string; data: { value: number; date: string }[] }[];
     counts: { id: string; data: { value: number; date: string }[] }[];
 }> {
     const repository = dataSource.getRepository(Job);
+
+    const getDateTrunc = (granularity: string) => {
+        switch (granularity) {
+            case 'daily': return 'DATE(j.created)';
+            case 'weekly': return 'DATE_TRUNC(\'week\', j.created)';
+            case 'monthly': return 'DATE_TRUNC(\'month\', j.created)';
+            case 'yearly': return 'DATE_TRUNC(\'year\', j.created)';
+            default: return 'DATE(j.created)';
+        }
+    };
+
+    const dateTrunc = getDateTrunc(granularity);
 
     return {
         rates: [
@@ -15,15 +27,15 @@ async function fetchJobs(_: Context): Promise<{
                 data: (
                     await repository
                         .createQueryBuilder('j')
-                        .select(`ROUND(AVG(("payRate" ->> 'max')::FLOAT)) AS "value", DATE(j.created) as "date"`)
+                        .select(`ROUND(AVG(("payRate" ->> 'max')::FLOAT)) AS "value", ${dateTrunc} as "date"`)
                         .where(
                             `"payRate" != '{"type": "unknown"}' AND 
                             "payRate" ->> 'currency' = 'GBP' AND 
                             "payRate" ->> 'type' = 'daily' AND 
                             "isInsideIr35" IS FALSE`,
                         )
-                        .groupBy('DATE(j.created)')
-                        .orderBy('DATE(j.created)', 'DESC')
+                        .groupBy(dateTrunc)
+                        .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
                 ).map((item) => ({
                     ...item,
@@ -35,7 +47,7 @@ async function fetchJobs(_: Context): Promise<{
                 data: (
                     await repository
                         .createQueryBuilder('j')
-                        .select(`ROUND(AVG(("payRate" ->> 'max')::FLOAT)) AS "value", DATE(j.created) as "date"`)
+                        .select(`ROUND(AVG(("payRate" ->> 'max')::FLOAT)) AS "value", ${dateTrunc} as "date"`)
                         .where(
                             `"payRate" != '{"type": "unknown"}' AND 
                             "payRate" ->> 'currency' = 'GBP' AND 
@@ -43,8 +55,8 @@ async function fetchJobs(_: Context): Promise<{
                             "isInsideIr35" IS FALSE AND 
                             "suggestApply" IS TRUE`,
                         )
-                        .groupBy('DATE(j.created)')
-                        .orderBy('DATE(j.created)', 'DESC')
+                        .groupBy(dateTrunc)
+                        .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
                 ).map((item) => ({
                     ...item,
@@ -58,9 +70,9 @@ async function fetchJobs(_: Context): Promise<{
                 data: (
                     await repository
                         .createQueryBuilder('j')
-                        .select('COUNT(1) as "value", DATE(j.created) as "date"')
-                        .groupBy('DATE(j.created)')
-                        .orderBy('DATE(j.created)', 'DESC')
+                        .select(`COUNT(1) as "value", ${dateTrunc} as "date"`)
+                        .groupBy(dateTrunc)
+                        .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
                 ).map((item) => ({
                     ...item,
@@ -72,10 +84,10 @@ async function fetchJobs(_: Context): Promise<{
                 data: (
                     await repository
                         .createQueryBuilder('j')
-                        .select('COUNT(1) as "value", DATE(j.created) as "date"')
+                        .select(`COUNT(1) as "value", ${dateTrunc} as "date"`)
                         .where('j."suggestApply" IS TRUE')
-                        .groupBy('DATE(j.created)')
-                        .orderBy('DATE(j.created)', 'DESC')
+                        .groupBy(dateTrunc)
+                        .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
                 ).map((item) => ({
                     ...item,
@@ -87,10 +99,10 @@ async function fetchJobs(_: Context): Promise<{
                 data: (
                     await repository
                         .createQueryBuilder('j')
-                        .select('COUNT(1) as "value", DATE(j.created) as "date"')
+                        .select(`COUNT(1) as "value", ${dateTrunc} as "date"`)
                         .where('j.applied IS TRUE')
-                        .groupBy('DATE(j.created)')
-                        .orderBy('DATE(j.created)', 'DESC')
+                        .groupBy(dateTrunc)
+                        .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
                 ).map((item) => ({
                     ...item,
@@ -102,10 +114,10 @@ async function fetchJobs(_: Context): Promise<{
                 data: (
                     await repository
                         .createQueryBuilder('j')
-                        .select('COUNT(1) as "value", DATE(j.created) as "date"')
+                        .select(`COUNT(1) as "value", ${dateTrunc} as "date"`)
                         .where('j.applied IS TRUE AND j."suggestApply" IS FALSE')
-                        .groupBy('DATE(j.created)')
-                        .orderBy('DATE(j.created)', 'DESC')
+                        .groupBy(dateTrunc)
+                        .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
                 ).map((item) => ({
                     ...item,
@@ -117,10 +129,10 @@ async function fetchJobs(_: Context): Promise<{
                 data: (
                     await repository
                         .createQueryBuilder('j')
-                        .select('COUNT(1) as "value", DATE(j.created) as "date"')
+                        .select(`COUNT(1) as "value", ${dateTrunc} as "date"`)
                         .where(`"payRate" = '{"type": "unknown"}'`)
-                        .groupBy('DATE(j.created)')
-                        .orderBy('DATE(j.created)', 'DESC')
+                        .groupBy(dateTrunc)
+                        .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
                 ).map((item) => ({
                     ...item,
