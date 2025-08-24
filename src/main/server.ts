@@ -13,8 +13,6 @@ app.use(express.json());
 
 const port = +(process.env.PORT || '14001');
 
-app.use(express.static('dist'));
-
 const decodeToken = <T>(token: string) => {
     const jwtSecret = process.env.JWT_SECRET || '__SECRET_CHANGE_ME__';
     return verify(token, jwtSecret) as unknown as T;
@@ -69,6 +67,7 @@ app.use((req, _res, next) => {
 });
 
 if (process.env.CLIENT_DEV) {
+    console.log('Client DEV mode enabled');
     const vite = await createViteServer({
         // plugins: [react()],
         server: { middlewareMode: true },
@@ -76,6 +75,8 @@ if (process.env.CLIENT_DEV) {
     });
     // Use vite's connect instance as middleware
     app.use(vite.middlewares);
+} else {
+    app.use(express.static('dist'));
 }
 
 app.listen(port, () => {

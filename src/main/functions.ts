@@ -5,6 +5,7 @@ import applyToJob from '../home/api/applyToJob';
 import dismissJob from '../home/api/dismissJob';
 import fetchJob from '../home/api/fetchJob';
 import fetchJobs from '../home/api/fetchJobs';
+import addFlaggedPhrase from '../preferences/api/addFlaggedPhrase';
 import fetchStats from '../stats/api/fetchStats';
 
 const functions = {
@@ -13,6 +14,7 @@ const functions = {
     applyToJob,
     dismissJob,
     fetchPreferences,
+    addFlaggedPhrase,
     fetchStats,
     computeJobCompatibility,
     reAnalyze,
