@@ -12,7 +12,8 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                 position="static" 
                 sx={{ 
                     backgroundColor: '#1a1a1a',
-                    borderBottom: '1px solid #333',
+                    borderBottom: '4px solid #ff1744',
+                    borderRadius: 0,
                 }}
             >
                 <Toolbar variant="regular" sx={{ gap: 3, px: 3 }}>
@@ -21,13 +22,14 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                             sx={{
                                 width: 32,
                                 height: 32,
-                                borderRadius: '50%',
+                                borderRadius: 0,
                                 backgroundColor: '#ff1744',
+                                border: '2px solid #000',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 color: 'white',
-                                fontWeight: 'bold',
+                                fontWeight: 900,
                             }}
                         >
                             J
@@ -37,8 +39,9 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                             component="div" 
                             sx={{ 
                                 color: 'white', 
-                                fontWeight: 'bold',
-                                letterSpacing: '0.1em',
+                                fontWeight: 900,
+                                letterSpacing: '0.2em',
+                                textShadow: '2px 2px 0px #000',
                             }}
                         >
                             JOB HUNTER
@@ -50,11 +53,16 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                         sx={{ 
                             textDecoration: 'none',
                             color: 'white',
-                            fontWeight: 500,
+                            fontWeight: 900,
                             textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
+                            letterSpacing: '0.1em',
+                            border: '2px solid transparent',
+                            px: 2,
+                            py: 1,
                             '&:hover': {
                                 color: '#ff1744',
+                                borderColor: '#ff1744',
+                                textShadow: '2px 2px 0px #000',
                             },
                         }}
                     >
@@ -65,11 +73,16 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                         sx={{ 
                             textDecoration: 'none',
                             color: 'white',
-                            fontWeight: 500,
+                            fontWeight: 900,
                             textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
+                            letterSpacing: '0.1em',
+                            border: '2px solid transparent',
+                            px: 2,
+                            py: 1,
                             '&:hover': {
                                 color: '#ff1744',
+                                borderColor: '#ff1744',
+                                textShadow: '2px 2px 0px #000',
                             },
                         }}
                     >
@@ -80,11 +93,16 @@ const Layout = memo(({ children }: { children: ReactNode }) => {
                         sx={{ 
                             textDecoration: 'none',
                             color: 'white',
-                            fontWeight: 500,
+                            fontWeight: 900,
                             textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
+                            letterSpacing: '0.1em',
+                            border: '2px solid transparent',
+                            px: 2,
+                            py: 1,
                             '&:hover': {
                                 color: '#ff1744',
+                                borderColor: '#ff1744',
+                                textShadow: '2px 2px 0px #000',
                             },
                         }}
                     >

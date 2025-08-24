@@ -37,6 +37,17 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                     <Button
                         sx={{
                             opacity: job.shouldApply ? undefined : 0.4,
+                            borderRadius: 0,
+                            border: '3px solid #000',
+                            fontWeight: 900,
+                            fontSize: '1rem',
+                            minWidth: 60,
+                            minHeight: 60,
+                            '&:hover': {
+                                borderWidth: '4px',
+                                transform: 'translate(-2px, -2px)',
+                                boxShadow: '4px 4px 0px #000',
+                            }
                         }}
                         variant="contained"
                         color="success"
@@ -60,6 +71,17 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                     <Button
                         sx={{
                             opacity: job.shouldApply ? 0.4 : undefined,
+                            borderRadius: 0,
+                            border: '3px solid #000',
+                            fontWeight: 900,
+                            fontSize: '1rem',
+                            minWidth: 60,
+                            minHeight: 60,
+                            '&:hover': {
+                                borderWidth: '4px',
+                                transform: 'translate(-2px, -2px)',
+                                boxShadow: '4px 4px 0px #000',
+                            }
                         }}
                         variant="contained"
                         color="error"

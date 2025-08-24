@@ -15,18 +15,30 @@ import { SourceIcon } from './SourceIcon';
 const computeBorderColor = (jobState: JobState) => {
     switch (true) {
         case jobState === JobState.Active:
-            return 'rgba(255, 23, 68, 0.2)';
+            return '#ff1744';
         default:
-            return 'rgba(51, 51, 51, 0.8)';
+            return '#333';
     }
 };
 
-const computeBackgroundColor = (jobState: JobState) => {
+const computeBackgroundColor = (jobState: JobState, job: Job) => {
+    let baseColor = '#1a1a1a';
+    
+    // Apply tinting based on job recommendation
+    let tintColor = '';
+    if (job.suggestApply) {
+        tintColor = 'rgba(76, 175, 80, 0.15)'; // Green tint
+    } else if (job.shouldApply) {
+        tintColor = 'rgba(255, 235, 59, 0.15)'; // More yellow tint
+    } else {
+        tintColor = 'rgba(244, 67, 54, 0.15)'; // Red tint
+    }
+
     switch (true) {
         case jobState === JobState.Active:
-            return '#1a1a1a';
+            return `linear-gradient(${tintColor}, ${tintColor}), ${baseColor}`;
         default:
-            return '#1a1a1a';
+            return `linear-gradient(${tintColor}, ${tintColor}), ${baseColor}`;
     }
 };
 
@@ -60,17 +72,17 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
             display="flex"
             flexDirection="column"
             sx={{
-                backgroundColor: computeBackgroundColor(jobState),
-                border: `1px solid ${computeBorderColor(jobState)}`,
+                background: computeBackgroundColor(jobState, job),
+                border: `3px solid ${computeBorderColor(jobState)}`,
                 opacity: jobState === JobState.Dismissing || jobState === JobState.Dismissed ? 0.3 : 1,
-                transition: 'border-color 0.2s ease',
                 cursor: 'pointer',
                 '&:hover': {
                     borderColor: '#ff1744',
+                    borderWidth: '4px',
                 },
             }}
             padding={3}
-            borderRadius={2}
+            borderRadius={0}
         >
             <Box display="flex" gap={5}>
                 <JobDecisionPanel job={job} onRemove={onRemove} setJobState={setJobState} />
@@ -82,9 +94,12 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                             sx={{ 
                                 textDecoration: 'none',
                                 color: 'white',
-                                fontWeight: 600,
+                                fontWeight: 900,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
                                 '&:hover': {
                                     color: '#ff1744',
+                                    textShadow: '2px 2px 0px #000',
                                 }
                             }}
                             rel="noreferrer noopener"
@@ -103,11 +118,14 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                                 sx={{
                                     color: '#000',
                                     fontSize: '0.85rem',
-                                    fontWeight: 500,
+                                    fontWeight: 900,
                                     backgroundColor: '#00e676',
                                     px: 1.5,
                                     py: 0.5,
-                                    borderRadius: '4px',
+                                    borderRadius: 0,
+                                    border: '2px solid #000',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
                                 }}
                             >
                                 {keyword}
