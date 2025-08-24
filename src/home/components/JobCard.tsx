@@ -23,7 +23,7 @@ const computeBorderColor = (jobState: JobState) => {
 
 const computeBackgroundColor = (jobState: JobState, job: Job) => {
     let baseColor = '#1a1a1a';
-    
+
     // Apply tinting based on job recommendation
     let tintColor = '';
     if (job.suggestApply) {
@@ -91,7 +91,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                         <SourceIcon source={job.source} />
                         <MuiLink
                             fontSize={24}
-                            sx={{ 
+                            sx={{
                                 textDecoration: 'none',
                                 color: 'white',
                                 fontWeight: 900,
@@ -100,7 +100,7 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                                 '&:hover': {
                                     color: '#ff1744',
                                     textShadow: '2px 2px 0px #000',
-                                }
+                                },
                             }}
                             rel="noreferrer noopener"
                             href={job.url}
@@ -110,10 +110,52 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                         </MuiLink>
                     </Box>
                     <Box display="flex" gap={2} flexWrap="wrap">
+                        {job.missingTechnologies?.map((tech) => (
+                            <Typography
+                                key={`missing-${tech}`}
+                                component="span"
+                                whiteSpace="nowrap"
+                                sx={{
+                                    color: '#fff',
+                                    fontSize: '0.85rem',
+                                    fontWeight: 900,
+                                    backgroundColor: '#f44336',
+                                    px: 1.5,
+                                    py: 0.5,
+                                    borderRadius: 0,
+                                    border: '2px solid #000',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                }}
+                            >
+                                {tech}
+                            </Typography>
+                        ))}
+                        {job.uncertainTechnologies?.map((tech) => (
+                            <Typography
+                                key={`uncertain-${tech}`}
+                                component="span"
+                                whiteSpace="nowrap"
+                                sx={{
+                                    color: '#000',
+                                    fontSize: '0.85rem',
+                                    fontWeight: 900,
+                                    backgroundColor: '#ff9800',
+                                    px: 1.5,
+                                    py: 0.5,
+                                    borderRadius: 0,
+                                    border: '2px solid #000',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                }}
+                            >
+                                {tech}
+                            </Typography>
+                        ))}
                         {job.jobKeywords.map((keyword) => (
-                            <Typography 
-                                key={keyword} 
-                                component="span" 
+                            <Typography
+                                key={keyword}
+                                component="span"
                                 whiteSpace="nowrap"
                                 sx={{
                                     color: '#000',
