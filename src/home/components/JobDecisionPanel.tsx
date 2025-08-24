@@ -39,6 +39,7 @@ const JobDecisionPanel = ({ job, onRemove, setJobState }: JobDecisionPanelProps)
                             opacity: job.shouldApply ? undefined : 0.4,
                         }}
                         variant="contained"
+                        color="success"
                         onClick={() => {
                             didClickOnActionButton.current = true;
 

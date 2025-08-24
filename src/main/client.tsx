@@ -32,7 +32,6 @@ const router = createBrowserRouter([
                 path: '/search',
                 element: <SearchPage />,
             },
-
             {
                 path: '/preferences',
                 element: <Preferences />,
@@ -52,6 +51,46 @@ const router = createBrowserRouter([
 const defaultTheme = createTheme({
     palette: {
         mode: 'dark',
+        background: {
+            default: '#0a0a0a',
+            paper: '#1a1a1a',
+        },
+        primary: {
+            main: '#ff1744',
+        },
+        secondary: {
+            main: '#00e676',
+        },
+        text: {
+            primary: '#ffffff',
+            secondary: '#cccccc',
+        },
+    },
+    typography: {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        h1: {
+            fontWeight: 900,
+            letterSpacing: '0.02em',
+        },
+        h2: {
+            fontWeight: 800,
+            letterSpacing: '0.02em',
+        },
+        h6: {
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+        },
+    },
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'uppercase',
+                    fontWeight: 600,
+                    letterSpacing: '0.05em',
+                },
+            },
+        },
     },
 });
 

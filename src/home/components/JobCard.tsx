@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
-import { blue, grey } from '@mui/material/colors';
 import MuiLink from '@mui/material/Link';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
@@ -16,9 +15,18 @@ import { SourceIcon } from './SourceIcon';
 const computeBorderColor = (jobState: JobState) => {
     switch (true) {
         case jobState === JobState.Active:
-            return blue['900'];
+            return 'rgba(255, 23, 68, 0.2)';
         default:
-            return grey['900'];
+            return 'rgba(51, 51, 51, 0.8)';
+    }
+};
+
+const computeBackgroundColor = (jobState: JobState) => {
+    switch (true) {
+        case jobState === JobState.Active:
+            return '#1a1a1a';
+        default:
+            return '#1a1a1a';
     }
 };
 
@@ -52,8 +60,14 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
             display="flex"
             flexDirection="column"
             sx={{
-                backgroundColor: computeBorderColor(jobState),
-                opacity: jobState === JobState.Dismissing || jobState === JobState.Dismissed ? 10 : undefined,
+                backgroundColor: computeBackgroundColor(jobState),
+                border: `1px solid ${computeBorderColor(jobState)}`,
+                opacity: jobState === JobState.Dismissing || jobState === JobState.Dismissed ? 0.3 : 1,
+                transition: 'border-color 0.2s ease',
+                cursor: 'pointer',
+                '&:hover': {
+                    borderColor: '#ff1744',
+                },
             }}
             padding={3}
             borderRadius={2}
@@ -65,7 +79,14 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                         <SourceIcon source={job.source} />
                         <MuiLink
                             fontSize={24}
-                            sx={{ textDecoration: 'none' }}
+                            sx={{ 
+                                textDecoration: 'none',
+                                color: 'white',
+                                fontWeight: 600,
+                                '&:hover': {
+                                    color: '#ff1744',
+                                }
+                            }}
                             rel="noreferrer noopener"
                             href={job.url}
                             target="_blank"
@@ -75,7 +96,20 @@ const JobCard = ({ job, onRemove }: { job: Job; onRemove: (job: Job) => void }) 
                     </Box>
                     <Box display="flex" gap={2} flexWrap="wrap">
                         {job.jobKeywords.map((keyword) => (
-                            <Typography key={keyword} color="grey" component="span" whiteSpace="nowrap">
+                            <Typography 
+                                key={keyword} 
+                                component="span" 
+                                whiteSpace="nowrap"
+                                sx={{
+                                    color: '#000',
+                                    fontSize: '0.85rem',
+                                    fontWeight: 500,
+                                    backgroundColor: '#00e676',
+                                    px: 1.5,
+                                    py: 0.5,
+                                    borderRadius: '4px',
+                                }}
+                            >
                                 {keyword}
                             </Typography>
                         ))}
