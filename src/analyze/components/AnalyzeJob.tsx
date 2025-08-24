@@ -62,7 +62,7 @@ const AnalyzeJob = () => {
                     onClick={() => {
                         (async () => {
                             const response = await computeJobCompatibility(job.descriptionSummary);
-                            setResult(response.compatibility_text);
+                            setResult(response.compatibilityText);
                         })().catch((error) => {
                             throw error;
                         });

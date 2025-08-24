@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 
-import { MongoClient, type Db } from 'mongodb';
 import { DataSource } from 'typeorm';
 import { Job } from '../../../job-hunter/entities/Job.ts';
 
@@ -17,17 +16,3 @@ export const dataSource = await new DataSource({
     migrations: ['./migrations/*.ts'],
     subscribers: [],
 }).initialize();
-
-let connection: Promise<Db>;
-
-export const connectToDatabase = async () => {
-    if (!connection) {
-        const url = 'mongodb://localhost:27017';
-        const client = new MongoClient(url);
-        connection = client.connect().then(() => {
-            return client.db('job_hunter');
-        });
-    }
-
-    return connection;
-};

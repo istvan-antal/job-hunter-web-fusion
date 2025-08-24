@@ -31,7 +31,7 @@ async function fetchJobs(_: Context): Promise<{
                 })),
             },
             {
-                id: 'dailyRateForSuggested',
+                id: 'Suggested',
                 data: (
                     await repository
                         .createQueryBuilder('j')
@@ -59,6 +59,21 @@ async function fetchJobs(_: Context): Promise<{
                     await repository
                         .createQueryBuilder('j')
                         .select('COUNT(1) as "value", DATE(j.created) as "date"')
+                        .groupBy('DATE(j.created)')
+                        .orderBy('DATE(j.created)', 'DESC')
+                        .getRawMany()
+                ).map((item) => ({
+                    ...item,
+                    value: +item.value,
+                })),
+            },
+            {
+                id: 'Suggested',
+                data: (
+                    await repository
+                        .createQueryBuilder('j')
+                        .select('COUNT(1) as "value", DATE(j.created) as "date"')
+                        .where('j."suggestApply" IS TRUE')
                         .groupBy('DATE(j.created)')
                         .orderBy('DATE(j.created)', 'DESC')
                         .getRawMany()
