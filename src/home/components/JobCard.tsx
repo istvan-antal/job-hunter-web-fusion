@@ -21,9 +21,9 @@ const computeBorderColor = (jobState: JobState) => {
     }
 };
 
-const computeBackgroundColor = (jobState: JobState, job: Job) => {
-    let baseColor = '#1a1a1a';
+const baseColor = '#1a1a1a';
 
+const computeBackgroundColor = (jobState: JobState, job: Job) => {
     // Apply tinting based on job recommendation
     let tintColor = '';
     if (job.suggestApply) {
