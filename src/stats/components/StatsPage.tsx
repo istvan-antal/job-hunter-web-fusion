@@ -26,6 +26,22 @@ const StatsPage = () => {
     const { rates, counts } = data;
     const chartType = granularity === 'daily' ? 'line' : 'column';
 
+    // Calculate single overall average for rates
+    const allRatesValues = rates.flatMap(series => 
+        series.data.map(item => item.value).filter(val => !isNaN(val))
+    );
+    const ratesAverage = allRatesValues.length > 0 
+        ? allRatesValues.reduce((a, b) => a + b, 0) / allRatesValues.length 
+        : 0;
+
+    // Calculate single overall average for counts
+    const allCountsValues = counts.flatMap(series => 
+        series.data.map(item => item.value).filter(val => !isNaN(val))
+    );
+    const countsAverage = allCountsValues.length > 0 
+        ? allCountsValues.reduce((a, b) => a + b, 0) / allCountsValues.length 
+        : 0;
+
     return (
         <Box height="90vh">
             <Box mb={2}>
@@ -98,12 +114,27 @@ const StatsPage = () => {
                             },
                         },
                     },
-                    series: rates.map((series) => ({
-                        type: chartType,
-                        id: series.id,
-                        name: series.id,
-                        data: series.data.map((item) => [new Date(item.date).getTime(), item.value]),
-                    })),
+                    series: [
+                        ...rates.map((series) => ({
+                            type: chartType,
+                            id: series.id,
+                            name: series.id,
+                            data: series.data.map((item) => [new Date(item.date).getTime(), item.value]),
+                        })),
+                        {
+                            type: 'line',
+                            id: 'rates_average',
+                            name: 'Overall Average',
+                            data: rates.length > 0 ? rates[0].data.map((item) => [new Date(item.date).getTime(), ratesAverage]) : [],
+                            dashStyle: 'dash',
+                            color: '#9c27b0',
+                            marker: {
+                                enabled: false,
+                            },
+                            lineWidth: 1,
+                            opacity: 0.7,
+                        },
+                    ],
                 }}
             />
             <HighchartsReact
@@ -161,12 +192,27 @@ const StatsPage = () => {
                             },
                         },
                     },
-                    series: counts.map((series) => ({
-                        type: chartType,
-                        id: series.id,
-                        name: series.id,
-                        data: series.data.map((item) => [new Date(item.date).getTime(), item.value]),
-                    })),
+                    series: [
+                        ...counts.map((series) => ({
+                            type: chartType,
+                            id: series.id,
+                            name: series.id,
+                            data: series.data.map((item) => [new Date(item.date).getTime(), item.value]),
+                        })),
+                        {
+                            type: 'line',
+                            id: 'counts_average',
+                            name: 'Overall Average',
+                            data: counts.length > 0 ? counts[0].data.map((item) => [new Date(item.date).getTime(), countsAverage]) : [],
+                            dashStyle: 'dash',
+                            color: '#9c27b0',
+                            marker: {
+                                enabled: false,
+                            },
+                            lineWidth: 1,
+                            opacity: 0.7,
+                        },
+                    ],
                 }}
             />
         </Box>
