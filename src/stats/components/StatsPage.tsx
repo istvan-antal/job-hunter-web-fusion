@@ -46,14 +46,57 @@ const StatsPage = () => {
             <HighchartsReact
                 highcharts={Highcharts}
                 options={{
+                    chart: {
+                        height: 500,
+                        backgroundColor: '#1a1a1a',
+                    },
                     title: {
                         text: `GBP ${granularity} rates`,
+                        style: {
+                            color: '#ffffff',
+                        },
                     },
                     xAxis: {
                         type: 'datetime',
+                        labels: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                        gridLineColor: '#333333',
+                        lineColor: '#333333',
+                        tickColor: '#333333',
                     },
-                    chart: {
-                        height: 500,
+                    yAxis: {
+                        labels: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                        gridLineColor: '#333333',
+                        title: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                    },
+                    legend: {
+                        itemStyle: {
+                            color: '#ffffff',
+                        },
+                        itemHoverStyle: {
+                            color: '#ff1744',
+                        },
+                    },
+                    colors: ['#ff1744', '#00e676', '#2196f3', '#ff9800', '#9c27b0', '#4caf50', '#ffeb3b', '#795548'],
+                    plotOptions: {
+                        series: {
+                            marker: {
+                                fillColor: '#ffffff',
+                                lineColor: null,
+                                lineWidth: 2,
+                            },
+                        },
                     },
                     series: rates.map((series) => ({
                         type: chartType,
@@ -66,14 +109,57 @@ const StatsPage = () => {
             <HighchartsReact
                 highcharts={Highcharts}
                 options={{
+                    chart: {
+                        height: 500,
+                        backgroundColor: '#1a1a1a',
+                    },
                     title: {
                         text: 'Counts',
+                        style: {
+                            color: '#ffffff',
+                        },
                     },
                     xAxis: {
                         type: 'datetime',
+                        labels: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                        gridLineColor: '#333333',
+                        lineColor: '#333333',
+                        tickColor: '#333333',
                     },
-                    chart: {
-                        height: 500,
+                    yAxis: {
+                        labels: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                        gridLineColor: '#333333',
+                        title: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                    },
+                    legend: {
+                        itemStyle: {
+                            color: '#ffffff',
+                        },
+                        itemHoverStyle: {
+                            color: '#ff1744',
+                        },
+                    },
+                    colors: ['#ff1744', '#00e676', '#2196f3', '#ff9800', '#9c27b0', '#4caf50', '#ffeb3b', '#795548'],
+                    plotOptions: {
+                        series: {
+                            marker: {
+                                fillColor: '#ffffff',
+                                lineColor: null,
+                                lineWidth: 2,
+                            },
+                        },
                     },
                     series: counts.map((series) => ({
                         type: chartType,
