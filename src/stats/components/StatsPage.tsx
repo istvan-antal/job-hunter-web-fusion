@@ -113,6 +113,9 @@ const StatsPage = () => {
                                 lineWidth: 2,
                             },
                         },
+                        column: {
+                            borderWidth: 0,
+                        },
                     },
                     series: [
                         ...rates.map((series) => ({
@@ -190,6 +193,9 @@ const StatsPage = () => {
                                 lineColor: null,
                                 lineWidth: 2,
                             },
+                        },
+                        column: {
+                            borderWidth: 0,
                         },
                     },
                     series: [
