@@ -93,6 +93,7 @@ async function fetchJobs(
             },
         ],
         counts: [
+            /*
             {
                 id: 'job',
                 data: (
@@ -107,6 +108,7 @@ async function fetchJobs(
                     value: +item.value,
                 })),
             },
+            */
             {
                 id: 'Suggested',
                 data: (
@@ -137,6 +139,7 @@ async function fetchJobs(
                     value: +item.value,
                 })),
             },
+            /*
             {
                 id: 'False negative suggestions',
                 data: (
@@ -167,6 +170,7 @@ async function fetchJobs(
                     value: +item.value,
                 })),
             },
+            */
         ],
     };
 }

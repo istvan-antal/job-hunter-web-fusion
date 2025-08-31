@@ -41,7 +41,7 @@ const Dashboard = memo(() => {
     useEffect(() => {
         if (data?.length) {
             if (matchCountsByType[tab] === 0) {
-                setTab(toMatchType(data[0]));
+                setTab((Object.entries(matchCountsByType).find(([, count]) => count > 0)?.[0] as MatchType) || 'match');
             }
         }
     }, [data, matchCountsByType, tab]);
