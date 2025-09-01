@@ -8,6 +8,8 @@ async function fetchJobs(
 ): Promise<{
     rates: { id: string; data: { value: number; date: string }[] }[];
     counts: { id: string; data: { value: number; date: string }[] }[];
+    perSource: { name: string; y: number }[];
+    perSourceSeries: { id: string; data: { value: number; date: string }[] }[];
 }> {
     const repository = dataSource.getRepository(Job);
 
@@ -27,6 +29,30 @@ async function fetchJobs(
     };
 
     const dateTrunc = getDateTrunc(granularity);
+
+    // Build per-source time series
+    const perSourceRows = await repository
+        .createQueryBuilder('j')
+        .select(`COUNT(1) as "value", ${dateTrunc} as "date", j.source as "id"`)
+        .groupBy(dateTrunc)
+        .addGroupBy('j.source')
+        .orderBy(dateTrunc, 'DESC')
+        .addOrderBy('id', 'ASC')
+        .getRawMany();
+
+    const perSourceSeries = (() => {
+        const map = new Map<string, { id: string; data: { value: number; date: string }[] }>();
+        for (const r of perSourceRows) {
+            const id = String(r.id);
+            const item = { value: Number(r.value), date: String(r.date) };
+            if (!map.has(id)) {
+                map.set(id, { id, data: [item] });
+            } else {
+                map.get(id)!.data.push(item);
+            }
+        }
+        return Array.from(map.values());
+    })();
 
     return {
         rates: [
@@ -110,12 +136,12 @@ async function fetchJobs(
             },
             */
             {
-                id: 'Suggested',
+                id: 'applied',
                 data: (
                     await repository
                         .createQueryBuilder('j')
                         .select(`COUNT(1) as "value", ${dateTrunc} as "date"`)
-                        .where('j."suggestApply" IS TRUE')
+                        .where('j.applied IS TRUE')
                         .groupBy(dateTrunc)
                         .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
@@ -125,12 +151,12 @@ async function fetchJobs(
                 })),
             },
             {
-                id: 'applied',
+                id: 'Suggested',
                 data: (
                     await repository
                         .createQueryBuilder('j')
                         .select(`COUNT(1) as "value", ${dateTrunc} as "date"`)
-                        .where('j.applied IS TRUE')
+                        .where('j."suggestApply" IS TRUE')
                         .groupBy(dateTrunc)
                         .orderBy(dateTrunc, 'DESC')
                         .getRawMany()
@@ -172,6 +198,16 @@ async function fetchJobs(
             },
             */
         ],
+        perSource: (
+            await repository
+                .createQueryBuilder('j')
+                .select('j.source', 'name')
+                .addSelect('COUNT(1)', 'y')
+                .groupBy('j.source')
+                .orderBy('y', 'DESC')
+                .getRawMany()
+        ).map((row) => ({ name: row.name as string, y: Number(row.y) })),
+        perSourceSeries,
     };
 }
 

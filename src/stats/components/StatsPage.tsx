@@ -23,24 +23,22 @@ const StatsPage = () => {
         return null;
     }
 
-    const { rates, counts } = data;
+    const { rates, counts, perSourceSeries } = data;
     const chartType = granularity === 'daily' ? 'line' : 'column';
 
     // Calculate single overall average for rates
-    const allRatesValues = rates.flatMap(series => 
-        series.data.map(item => item.value).filter(val => !isNaN(val))
+    const allRatesValues = rates.flatMap((series) =>
+        series.data.map((item) => item.value).filter((val) => !isNaN(val)),
     );
-    const ratesAverage = allRatesValues.length > 0 
-        ? allRatesValues.reduce((a, b) => a + b, 0) / allRatesValues.length 
-        : 0;
+    const ratesAverage =
+        allRatesValues.length > 0 ? allRatesValues.reduce((a, b) => a + b, 0) / allRatesValues.length : 0;
 
     // Calculate single overall average for counts
-    const allCountsValues = counts.flatMap(series => 
-        series.data.map(item => item.value).filter(val => !isNaN(val))
+    const allCountsValues = counts.flatMap((series) =>
+        series.data.map((item) => item.value).filter((val) => !isNaN(val)),
     );
-    const countsAverage = allCountsValues.length > 0 
-        ? allCountsValues.reduce((a, b) => a + b, 0) / allCountsValues.length 
-        : 0;
+    const countsAverage =
+        allCountsValues.length > 0 ? allCountsValues.reduce((a, b) => a + b, 0) / allCountsValues.length : 0;
 
     return (
         <Box height="90vh">
@@ -128,7 +126,10 @@ const StatsPage = () => {
                             type: 'line',
                             id: 'rates_average',
                             name: 'Overall Average',
-                            data: rates.length > 0 ? rates[0].data.map((item) => [new Date(item.date).getTime(), ratesAverage]) : [],
+                            data:
+                                rates.length > 0
+                                    ? rates[0].data.map((item) => [new Date(item.date).getTime(), ratesAverage])
+                                    : [],
                             dashStyle: 'dash',
                             color: '#9c27b0',
                             marker: {
@@ -209,7 +210,10 @@ const StatsPage = () => {
                             type: 'line',
                             id: 'counts_average',
                             name: 'Overall Average',
-                            data: counts.length > 0 ? counts[0].data.map((item) => [new Date(item.date).getTime(), countsAverage]) : [],
+                            data:
+                                counts.length > 0
+                                    ? counts[0].data.map((item) => [new Date(item.date).getTime(), countsAverage])
+                                    : [],
                             dashStyle: 'dash',
                             color: '#9c27b0',
                             marker: {
@@ -218,6 +222,74 @@ const StatsPage = () => {
                             lineWidth: 1,
                             opacity: 0.7,
                         },
+                    ],
+                }}
+            />
+            <HighchartsReact
+                highcharts={Highcharts}
+                options={{
+                    chart: {
+                        height: 500,
+                        backgroundColor: '#1a1a1a',
+                    },
+                    title: {
+                        text: 'Jobs per Source (Time Series)',
+                        style: {
+                            color: '#ffffff',
+                        },
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        labels: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                        gridLineColor: '#333333',
+                        lineColor: '#333333',
+                        tickColor: '#333333',
+                    },
+                    yAxis: {
+                        labels: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                        gridLineColor: '#333333',
+                        title: {
+                            style: {
+                                color: '#cccccc',
+                            },
+                        },
+                    },
+                    legend: {
+                        itemStyle: {
+                            color: '#ffffff',
+                        },
+                        itemHoverStyle: {
+                            color: '#ff1744',
+                        },
+                    },
+                    colors: ['#ff1744', '#00e676', '#2196f3', '#ff9800', '#9c27b0', '#4caf50', '#ffeb3b', '#795548'],
+                    plotOptions: {
+                        series: {
+                            marker: {
+                                fillColor: '#ffffff',
+                                lineColor: null,
+                                lineWidth: 2,
+                            },
+                        },
+                        column: {
+                            borderWidth: 0,
+                        },
+                    },
+                    series: [
+                        ...((perSourceSeries ?? []).map((series) => ({
+                            type: chartType,
+                            id: series.id,
+                            name: series.id,
+                            data: series.data.map((item) => [new Date(item.date).getTime(), item.value]),
+                        })) as Highcharts.SeriesOptionsType[]),
                     ],
                 }}
             />
